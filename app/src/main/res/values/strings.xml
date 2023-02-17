@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Albertsons Coding</string>
+    <string name="result_string">%d Result(s)</string>
+    <string name="submit_button">Submit</string>
+    <string name="acronym_hint">Enter Acronym or Initialism</string>
+    <string name="network_error">Network Error</string>
+    <string name="http_error">HTTP Error</string>
+    <string name="serial_error">Decoding Error</string>
+    <string name="generic_error">Error fetching data. Try again later.</string>
+</resources>

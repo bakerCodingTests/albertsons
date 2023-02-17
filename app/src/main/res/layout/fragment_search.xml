@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="acronymVM"
+            type="com.example.albertsonscoding.viewmodel.AcronymVM" />
+
+        <variable
+            name="lfAdapter"
+            type="com.example.albertsonscoding.view.search.LongformAdapter" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:showSnackBar="@{acronymVM.state}">
+
+        <EditText
+            android:id="@+id/main_edit_sf"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/border"
+            android:drawableStart="@drawable/ic_baseline_search_24"
+            android:hint="@string/acronym_hint"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:maxLines="1"
+            android:padding="5dp"
+            android:text="@={acronymVM.query}"
+            app:layout_constraintEnd_toStartOf="@id/main_button_submit"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/main_button_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:enabled="@{acronymVM.query.length > 0}"
+            android:onClick="@{() -> acronymVM.getLongforms()}"
+            android:text="@string/submit_button"
+            app:layout_constraintBottom_toBottomOf="@id/main_edit_sf"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/main_edit_sf" />
+
+        <TextView
+            android:id="@+id/main_text_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/result_string(acronymVM.state.longforms.size)}"
+            android:textSize="24sp"
+            android:visibility="@{acronymVM.state.showResultCount ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/main_edit_sf"
+            tools:text="@string/result_string" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/main_divider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{acronymVM.state.showResultCount ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toBottomOf="@id/main_text_count" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/main_rv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:adapter="@{lfAdapter}"
+            android:updateState="@{acronymVM.state}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/main_divider"
+            tools:itemCount="5"
+            tools:listitem="@layout/card_longform" />
+
+        <ProgressBar
+            android:id="@+id/main_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{acronymVM.state.isLoading ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/main_edit_sf" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
